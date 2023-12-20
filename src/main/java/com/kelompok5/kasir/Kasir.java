@@ -13,7 +13,7 @@ public class Kasir implements AuthListener {
     public static void main(String[] args) throws SQLException {
         FlatMacDarkLaf.setup();
 
-        SwingUtilities.invokeLater(Kasir::showLoginPage);
+        SwingUtilities.invokeLater(Kasir::showMainPage);
     }
 
     public static void showLoginPage() {

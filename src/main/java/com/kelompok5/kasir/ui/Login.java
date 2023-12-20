@@ -4,6 +4,7 @@ package com.kelompok5.kasir.ui;
 
 import com.kelompok5.kasir.dao.UserDaoImpl;
 import com.kelompok5.kasir.model.User;
+import raven.toast.Notifications;
 
 import java.sql.SQLException;
 
@@ -11,6 +12,7 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        Notifications.getInstance().setJFrame(this);
     }
 
 
@@ -135,6 +137,10 @@ public class Login extends javax.swing.JFrame {
             authListener.onAuthenticationSuccess(username);
             dispose();
         } else {
+            Notifications.getInstance().show(
+                    Notifications.Type.ERROR,
+                    Notifications.Location.TOP_RIGHT,
+                    "Username/Password Salah!");
         }
     }//GEN-LAST:event_btLoginActionPerformed
 
@@ -145,7 +151,7 @@ public class Login extends javax.swing.JFrame {
     private boolean authenticate(String username, char[] password) {
         try {
             User user = userDao.getUser(username);
-            if (user != null) {
+            if (user != null && password.length == user.getPassword().length()) {
                 boolean ok = true;
                 for (int i = 0; i < password.length; i++) {
                     if (user.getPassword().charAt(i) != password[i]) {
