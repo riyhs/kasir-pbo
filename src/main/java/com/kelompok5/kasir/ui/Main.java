@@ -4,12 +4,15 @@
  */
 package com.kelompok5.kasir.ui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.kelompok5.kasir.dao.ItemDaoImpl;
 import com.kelompok5.kasir.dao.ProductDaoImpl;
 import com.kelompok5.kasir.dao.TransactionDaoImpl;
 import com.kelompok5.kasir.model.Item;
 import com.kelompok5.kasir.model.Product;
 import com.kelompok5.kasir.model.Transaction;
+import raven.toast.Notifications;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
@@ -36,6 +39,14 @@ public class Main extends javax.swing.JFrame {
 
         setupCartTable();
         updateCartTable();
+
+        setupTransactionTable();
+        updateTransactionTable();
+
+        setupItemTable();
+
+        FlatIntelliJLaf.setup();
+        Notifications.getInstance().setJFrame(this);
     }
 
     /**
@@ -83,7 +94,10 @@ public class Main extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         tbProduct = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbTransaction = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbItemTransaction = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -389,23 +403,51 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Produk", productPanel);
 
-        jLabel3.setText("Transaksi");
+        tbTransaction.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbTransaction);
+
+        tbItemTransaction.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tbItemTransaction);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(1019, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(160, 160, 160))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(311, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(jLabel3)
-                .addContainerGap(550, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Transaksi", jPanel4);
@@ -455,7 +497,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btAddToCartActionPerformed
 
     private void tfSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSearchProductActionPerformed
-
+        // TODO add your handling code here:
     }//GEN-LAST:event_tfSearchProductActionPerformed
 
     private void btPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPayActionPerformed
@@ -547,11 +589,13 @@ public class Main extends javax.swing.JFrame {
             transaction = transactionDao.getLatestTransaction();
 
             saveTransactionItem(transaction.getId());
+            updateTransactionTable();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
 
-        // TODO Reset screen
+        clearKasirScreen();
+        Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_RIGHT, "Transaksi berhasil disimpan!");
     }//GEN-LAST:event_btSaveTransactionActionPerformed
 
     private void saveTransactionItem(int id) {
@@ -626,6 +670,14 @@ public class Main extends javax.swing.JFrame {
         txtCashback.setText("Rp"+ cashBack);
     }
 
+    private void clearKasirScreen() {
+        cartTableModel.setRowCount(0);
+        updateTotal(-1 * totalPrice);
+        updateCashback(0);
+        tfQuantity.setText("");
+        tfSearchProduct.setText("");
+    }
+
     // ========= PRODUCT
     private void updateProductTable() {
         try {
@@ -673,6 +725,71 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
+
+    // ========= TRANSACTION
+    private void updateTransactionTable() {
+        try {
+            List<Transaction> transactionList = transactionDao.getTransactions();
+            transactionTableModel.setRowCount(0);
+            for (Transaction transaction : transactionList) {
+                transactionTableModel.addRow(new Object[]{transaction.getId(), transaction.getTotal(), transaction.getDatetime()});
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private void setupTransactionTable() {
+        tbTransaction.setModel(transactionTableModel);
+        transactionTableModel.addColumn("ID Transaksi");
+        transactionTableModel.addColumn("Total");
+        transactionTableModel.addColumn("Waktu");
+
+        tbTransaction.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Vector v = transactionTableModel.getDataVector().elementAt(tbTransaction.convertRowIndexToModel(tbTransaction.getSelectedRow()));
+                updateItemTable(Integer.parseInt(v.elementAt(0).toString()));
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+    }
+
+    private void updateItemTable(int id) {
+        try {
+            List<Item> itemList = itemDao.getItems(id);
+            itemTableModel.setRowCount(0);
+            for (Item item : itemList) {
+                itemTableModel.addRow(new Object[]{item.getName(), item.getQty(), item.getPrice(), item.getTotal()});
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private void setupItemTable() {
+        tbItemTransaction.setModel(itemTableModel);
+        itemTableModel.addColumn("Nama");
+        itemTableModel.addColumn("Qty");
+        itemTableModel.addColumn("Harga");
+        itemTableModel.addColumn("Total");
+    }
+
     private void clearProductFields() {
         tfProductName.setText("");
         tfProductPrice.setText("");
@@ -695,9 +812,12 @@ public class Main extends javax.swing.JFrame {
     final ProductDaoImpl productDao = new ProductDaoImpl();
     final ItemDaoImpl itemDao = new ItemDaoImpl();
     final TransactionDaoImpl transactionDao = new TransactionDaoImpl();
+
     final DefaultTableModel productTableModel = new DefaultTableModel();
     final DefaultTableModel searchTableModel = new DefaultTableModel();
     final DefaultTableModel cartTableModel = new DefaultTableModel();
+    final DefaultTableModel transactionTableModel = new DefaultTableModel();
+    final DefaultTableModel itemTableModel = new DefaultTableModel();
 
     private List<Item> listCart = new ArrayList<>();
     private Double totalPrice = 0.0;
@@ -719,18 +839,21 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel kasirPanel;
     private javax.swing.JPanel productPanel;
     private javax.swing.JTable tbCart;
+    private javax.swing.JTable tbItemTransaction;
     private javax.swing.JTable tbProduct;
     private javax.swing.JTable tbSearchProduct;
+    private javax.swing.JTable tbTransaction;
     private javax.swing.JTextField tfAmounPaid;
     private javax.swing.JTextField tfProductName;
     private javax.swing.JTextField tfProductPrice;
