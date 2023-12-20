@@ -4,8 +4,7 @@
  */
 package com.kelompok5.kasir.ui;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.kelompok5.kasir.dao.ItemDaoImpl;
 import com.kelompok5.kasir.dao.ProductDaoImpl;
 import com.kelompok5.kasir.dao.TransactionDaoImpl;
@@ -45,7 +44,7 @@ public class Main extends javax.swing.JFrame {
 
         setupItemTable();
 
-        FlatIntelliJLaf.setup();
+        FlatMacDarkLaf.setup();
         Notifications.getInstance().setJFrame(this);
     }
 
@@ -100,7 +99,12 @@ public class Main extends javax.swing.JFrame {
         tbItemTransaction = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Kasir");
 
+        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        tbSearchProduct.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbSearchProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -112,8 +116,10 @@ public class Main extends javax.swing.JFrame {
                 "ID", "Nama", "Qty", "Harga"
             }
         ));
+        tbSearchProduct.setRowHeight(30);
         jScrollPane1.setViewportView(tbSearchProduct);
 
+        tfSearchProduct.setPreferredSize(new java.awt.Dimension(64, 32));
         tfSearchProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfSearchProductActionPerformed(evt);
@@ -123,6 +129,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setText("Cari Produk");
 
         btAddToCart.setText("Tambah");
+        btAddToCart.setPreferredSize(new java.awt.Dimension(73, 33));
         btAddToCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAddToCartActionPerformed(evt);
@@ -130,6 +137,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         btDeleteCartItem.setText("Hapus");
+        btDeleteCartItem.setPreferredSize(new java.awt.Dimension(72, 33));
         btDeleteCartItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btDeleteCartItemActionPerformed(evt);
@@ -138,13 +146,17 @@ public class Main extends javax.swing.JFrame {
 
         jLabel4.setText("Quantity");
 
+        tfQuantity.setPreferredSize(new java.awt.Dimension(64, 32));
+
         btSearchProduct.setText("Cari");
+        btSearchProduct.setPreferredSize(new java.awt.Dimension(72, 33));
         btSearchProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSearchProductActionPerformed(evt);
             }
         });
 
+        tbCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbCart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -164,27 +176,36 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbCart.setRowHeight(30);
         tbCart.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(tbCart);
 
         jLabel10.setText("Uang dibayarkan");
 
+        tfAmounPaid.setPreferredSize(new java.awt.Dimension(64, 32));
+
         btPay.setText("Bayar");
+        btPay.setPreferredSize(new java.awt.Dimension(72, 33));
         btPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btPayActionPerformed(evt);
             }
         });
 
+        txtTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtTotal.setText("100.000");
 
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel12.setText("Total:  ");
 
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel13.setText("Kembalian:  ");
 
+        txtCashback.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtCashback.setText("100.000");
 
         btSaveTransaction.setText("Simpan");
+        btSaveTransaction.setPreferredSize(new java.awt.Dimension(72, 33));
         btSaveTransaction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSaveTransactionActionPerformed(evt);
@@ -193,6 +214,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel2.setText("Keranjang");
 
+        txtNotEnough.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtNotEnough.setText("Uang dibayarkan kurang!");
 
         javax.swing.GroupLayout kasirPanelLayout = new javax.swing.GroupLayout(kasirPanel);
@@ -200,7 +222,7 @@ public class Main extends javax.swing.JFrame {
         kasirPanelLayout.setHorizontalGroup(
             kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(kasirPanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(24, 24, 24)
                 .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(kasirPanelLayout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -208,22 +230,22 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(btDeleteCartItem, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, kasirPanelLayout.createSequentialGroup()
                         .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfSearchProduct)
+                            .addComponent(tfSearchProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE))
                 .addGap(56, 56, 56)
                 .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kasirPanelLayout.createSequentialGroup()
-                        .addComponent(tfQuantity)
+                        .addComponent(tfQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btAddToCart, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kasirPanelLayout.createSequentialGroup()
-                        .addComponent(tfAmounPaid)
+                        .addComponent(tfAmounPaid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btPay, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(kasirPanelLayout.createSequentialGroup()
@@ -236,34 +258,33 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(txtCashback, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btSaveTransaction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtNotEnough, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(31, 31, 31))
+                .addGap(24, 24, 24))
         );
         kasirPanelLayout.setVerticalGroup(
             kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(kasirPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(24, 24, 24)
                 .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(kasirPanelLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btAddToCart)))
+                            .addComponent(btAddToCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(kasirPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btSearchProduct))))
+                            .addComponent(btSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btDeleteCartItem)
+                    .addComponent(btDeleteCartItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(kasirPanelLayout.createSequentialGroup()
                         .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTotal)
@@ -273,22 +294,25 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfAmounPaid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btPay))
+                            .addComponent(btPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(kasirPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCashback)
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNotEnough)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btSaveTransaction)))
-                .addGap(29, 29, 29))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                        .addComponent(btSaveTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         jTabbedPane1.addTab("Kasir", kasirPanel);
 
         jLabel20.setText("Nama Produk");
 
+        tfProductName.setMinimumSize(new java.awt.Dimension(64, 32));
+        tfProductName.setPreferredSize(new java.awt.Dimension(64, 32));
         tfProductName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfProductNameActionPerformed(evt);
@@ -297,6 +321,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel21.setText("Harga Produk");
 
+        tfProductPrice.setPreferredSize(new java.awt.Dimension(64, 32));
         tfProductPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfProductPriceActionPerformed(evt);
@@ -305,6 +330,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel22.setText("Stock Produk");
 
+        tfProductStock.setPreferredSize(new java.awt.Dimension(64, 32));
         tfProductStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfProductStockActionPerformed(evt);
@@ -312,6 +338,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         btProductAdd.setText("Tambah Baru");
+        btProductAdd.setPreferredSize(new java.awt.Dimension(100, 33));
         btProductAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btProductAddActionPerformed(evt);
@@ -319,6 +346,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         btProductUpdate.setText("Ubah Produk");
+        btProductUpdate.setPreferredSize(new java.awt.Dimension(98, 33));
         btProductUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btProductUpdateActionPerformed(evt);
@@ -326,12 +354,14 @@ public class Main extends javax.swing.JFrame {
         });
 
         btProductDelete.setText("Hapus Produk");
+        btProductDelete.setPreferredSize(new java.awt.Dimension(104, 33));
         btProductDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btProductDeleteActionPerformed(evt);
             }
         });
 
+        tbProduct.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -351,6 +381,7 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbProduct.setRowHeight(30);
         tbProduct.getTableHeader().setReorderingAllowed(false);
         jScrollPane6.setViewportView(tbProduct);
 
@@ -359,26 +390,27 @@ public class Main extends javax.swing.JFrame {
         productPanelLayout.setHorizontalGroup(
             productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productPanelLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(24, 24, 24)
                 .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tfProductName)
+                    .addComponent(tfProductName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfProductPrice)
+                    .addComponent(tfProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                    .addComponent(tfProductStock)
+                    .addComponent(tfProductStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                     .addComponent(btProductAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btProductUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btProductDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(36, 36, 36)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(351, Short.MAX_VALUE))
+                .addContainerGap(288, Short.MAX_VALUE))
         );
         productPanelLayout.setVerticalGroup(
             productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productPanelLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(24, 24, 24)
                 .addGroup(productPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(productPanelLayout.createSequentialGroup()
                         .addComponent(jLabel20)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -392,17 +424,17 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfProductStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btProductAdd)
+                        .addComponent(btProductAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(btProductUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btProductUpdate)
-                        .addGap(18, 18, 18)
-                        .addComponent(btProductDelete))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addComponent(btProductDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(24, 24, 24))
         );
 
         jTabbedPane1.addTab("Produk", productPanel);
 
+        tbTransaction.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbTransaction.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -414,8 +446,11 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbTransaction.setRowHeight(30);
+        tbTransaction.setShowHorizontalLines(true);
         jScrollPane2.setViewportView(tbTransaction);
 
+        tbItemTransaction.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbItemTransaction.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -427,6 +462,7 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbItemTransaction.setRowHeight(30);
         jScrollPane4.setViewportView(tbItemTransaction);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -434,20 +470,20 @@ public class Main extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+                .addGap(24, 24, 24))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(228, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
 
         jTabbedPane1.addTab("Transaksi", jPanel4);
@@ -456,14 +492,14 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("Kasir");

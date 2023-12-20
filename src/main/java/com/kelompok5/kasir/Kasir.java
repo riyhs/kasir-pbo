@@ -1,6 +1,6 @@
 package com.kelompok5.kasir;
 
-import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.kelompok5.kasir.ui.AuthListener;
 import com.kelompok5.kasir.ui.Login;
 import com.kelompok5.kasir.ui.Main;
@@ -11,9 +11,9 @@ import java.sql.SQLException;
 public class Kasir implements AuthListener {
 
     public static void main(String[] args) throws SQLException {
-        FlatDarkLaf.setup();
+        FlatMacDarkLaf.setup();
 
-        SwingUtilities.invokeLater(Kasir::showMainPage);
+        SwingUtilities.invokeLater(Kasir::showLoginPage);
     }
 
     public static void showLoginPage() {
