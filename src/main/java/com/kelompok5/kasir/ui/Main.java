@@ -556,22 +556,30 @@ public class Main extends javax.swing.JFrame {
         int selectedId = Integer.parseInt(selectedItem.elementAt(0).toString());
         listCart.removeIf(item -> item.getProductId() == selectedId);
         updateCartTable();
-        // TODO handle stock
+        updateStock(selectedId, Integer.parseInt(selectedItem.elementAt(2).toString()));
     }//GEN-LAST:event_btDeleteCartItemActionPerformed
 
     private void btAddToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddToCartActionPerformed
         int qty = Integer.parseInt(tfQuantity.getText());
         Vector product = searchTableModel.getDataVector().elementAt(tbSearchProduct.convertRowIndexToModel(tbSearchProduct.getSelectedRow()));
+        int productStock = Integer.parseInt(product.elementAt(3).toString());
 
-        Item item = new Item();
-        item.setProductId(Integer.parseInt(product.elementAt(0).toString()));
-        item.setName(product.elementAt(1).toString());
-        item.setPrice(Double.parseDouble(product.elementAt(2).toString()));
-        item.setQty(qty);
-        item.setTotal(item.getPrice() * qty);
+        if (productStock >= qty) {
+            Item item = new Item();
+            item.setProductId(Integer.parseInt(product.elementAt(0).toString()));
+            item.setName(product.elementAt(1).toString());
+            item.setPrice(Double.parseDouble(product.elementAt(2).toString()));
+            item.setQty(qty);
+            item.setTotal(item.getPrice() * qty);
 
-        addToCart(item);
-        tfQuantity.setText("");
+            addToCart(item);
+            tfQuantity.setText("");
+        } else {
+            Notifications.getInstance().show(
+                    Notifications.Type.ERROR,
+                    Notifications.Location.TOP_RIGHT,
+                    "Stock produk tidak cukup!");
+        }
     }//GEN-LAST:event_btAddToCartActionPerformed
 
     private void tfSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSearchProductActionPerformed
@@ -700,10 +708,6 @@ public class Main extends javax.swing.JFrame {
             dataprint.setDate(v.elementAt(2).toString());
             dataprint.setFields(fields);
 
-//            System.out.println(dataprint.getDate());
-//            System.out.println(dataprint.getTotal());
-//            System.out.println(fields.size());
-
             PrintManager.getInstance().printReportPayment(dataprint);
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -748,7 +752,7 @@ public class Main extends javax.swing.JFrame {
 
     private void addToCart(Item item) {
         listCart.add(item);
-        // TODO handle stock
+        updateStock(item.getProductId(), -1 * item.getQty());
         updateTotal(item.getTotal());
         updateCartTable();
     }
@@ -780,6 +784,17 @@ public class Main extends javax.swing.JFrame {
 
     private void updateCashback(double cashBack) {
         txtCashback.setText("Rp"+ cashBack);
+    }
+
+    private void updateStock(int id, int change) {
+        try {
+            Product product = productDao.getProduct(id);
+            product.setStock(product.getStock() + change);
+            productDao.update(product);
+            updateSearchTable("");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     private void clearKasirScreen() {

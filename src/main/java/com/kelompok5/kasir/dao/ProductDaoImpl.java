@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ProductDaoImpl implements ProductDao {
 
@@ -66,22 +69,36 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> getProducts(String name) throws SQLException {
-        String q = "SELECT * FROM product WHERE name LIKE CONCAT('%',?,'%')";
-        PreparedStatement ps = con.prepareStatement(q);
-        ps.setString(1, name);
-        ResultSet rs = ps.executeQuery();
-        List<Product> ls = new ArrayList<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        while (rs.next()) {
-            Product product = new Product();
-            product.setId(rs.getInt("id"));
-            product.setName(rs.getString("name"));
-            product.setPrice(rs.getDouble("price"));
-            product.setStock(rs.getInt("stock"));
-            ls.add(product);
+        Future<List<Product>> future = executorService.submit(() -> {
+            String q = "SELECT * FROM product WHERE name LIKE CONCAT('%',?,'%')";
+            PreparedStatement ps = con.prepareStatement(q);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            List<Product> ls = new ArrayList<>();
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setPrice(rs.getDouble("price"));
+                product.setStock(rs.getInt("stock"));
+                ls.add(product);
+            }
+
+            return ls;
+        });
+
+        try {
+            List<Product> products = future.get();
+            return products;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            executorService.shutdown();
         }
-
-        return ls;
     }
 
     @Override
